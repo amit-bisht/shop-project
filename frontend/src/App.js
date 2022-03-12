@@ -5,6 +5,7 @@ import HomeScreen from "./components/screens/HomeScreen";
 import { Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import ProductScreen from "./components/screens/ProductScreen";
+import CartScreen from "./components/screens/CartScreen";
 function App() {
   return (
     <React.Fragment>
@@ -16,6 +17,9 @@ function App() {
           </Route>
           <Route path="/product/:id">
             <ProductScreen/>
+          </Route>
+          <Route path="/cart/:id">
+            <CartScreen/>
           </Route>
         </Container>
       </main>
