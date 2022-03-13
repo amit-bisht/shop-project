@@ -18,7 +18,7 @@ function App() {
           <Route path="/product/:id">
             <ProductScreen/>
           </Route>
-          <Route path="/cart/:id">
+          <Route path="/cart">
             <CartScreen/>
           </Route>
         </Container>

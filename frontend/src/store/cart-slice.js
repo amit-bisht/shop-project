@@ -1,14 +1,24 @@
 import {createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 const initialState={
-    cartItems:[]
+    cartItems:[],
+    totalQuantity:0,
 }
 const cartSlice=createSlice({
     name:"cart",
     initialState:initialState,
     reducers:{
         addItem(state,action){
-            state.cartItems.push(action.payload)
+            const newItem=action.payload
+            const existingItem=state.cartItems.find((item)=>item._id==newItem._id)
+            if(!existingItem){
+                state.cartItems.push({_id:newItem._id,name:newItem.name,image:newItem.image,price:newItem.price,quantity:1})
+                state.totalQuantity++;
+            }
+            else{
+                existingItem.quantity++;
+                state.totalQuantity++;
+            }
         }
     }
 })
@@ -38,4 +48,4 @@ export const addToCart=(id)=>{
     }
 }
 export default cartSlice
-const cartAction=cartSlice.actions
+export const cartAction=cartSlice.actions

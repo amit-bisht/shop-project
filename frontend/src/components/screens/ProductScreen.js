@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -8,38 +8,29 @@ import {
   Image,
   ListGroup,
   Button,
-  Card,
-  Form,
+  Card
 } from "react-bootstrap";
 
 import Rating from "../Rating";
 import { fetchProduct } from "../../store/product-detail-slice";
 import Loader from "../Loader";
 import Message from "../Message";
+import { cartAction } from "../../store/cart-slice";
 
 const ProductScreen = () => {
   const dispatch = useDispatch();
   let { product, loading, error } = useSelector((state) => state.productDetail);
   const params = useParams();
   const id = params.id;
-  const [qty, setQty] = useState(1);
 
   useEffect(() => {
     dispatch(fetchProduct(id));
   }, [id, dispatch]);
-  const qtyHandler = (event) => {
-    setQty(event.target.value);
-  };
-  const addQtyHandler = () => {
-    if (product.countInStock >= qty) {
-      setQty(qty + 1);
-    }
-  };
-  const decreaseQtyHandler = () => {
-    if (qty > 1) {
-      setQty(qty - 1);
-    }
-  };
+  
+  const addCartHandler=()=>{
+    dispatch(cartAction.addItem({_id:product._id,name:product.name,image:product.image,price:product.price}))
+  }
+  
   return (
     <div>
       <Link to="/" className="btn btn-light my-3">
@@ -98,44 +89,16 @@ const ProductScreen = () => {
                         )}
                       </Row>
                     </ListGroup.Item>
-                    {product.countInStock > 0 && (
-                      <ListGroup.Item>
-                        <Row>
-                          <Col xs="auto" className="my-1">
-                            <Row>
-                              <Col>
-                                <Button onClick={decreaseQtyHandler}>
-                                  <i className="fa-solid fa-minus"></i>
-                                </Button>
-                              </Col>
-                              <Col>
-                                <Form.Control
-                                  readOnly
-                                  value={qty}
-                                  type="text"
-                                  placeholder="Qty"
-                                />
-                              </Col>
-                              <Col>
-                                <Button onClick={addQtyHandler}>
-                                  <i className="fa-solid fa-plus"></i>
-                                </Button>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </ListGroup.Item>
-                    )}
+                    
                     <ListGroup.Item>
                       <div className="d-grid gap-2">
-                        <Link to={`/cart/${product._id}`}>
                           <Button
                             disabled={product.countInStock == 0}
                             type="button"
+                            onClick={addCartHandler}
                           >
                             Add to Cart
                           </Button>
-                        </Link>
                       </div>
                     </ListGroup.Item>
                   </ListGroup>
