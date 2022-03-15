@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Product(models.Model):
     user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     name=models.CharField(max_length=200,null=True,blank=True)
@@ -66,3 +67,4 @@ class ShippingAddress(models.Model):
     country=models.CharField(max_length=200,null=True,blank=True)
     shippingPrice=models.DecimalField(max_digits=7,decimal_places=2,null=True,blank=True)
     _id=models.AutoField(primary_key=True,editable=False)
+

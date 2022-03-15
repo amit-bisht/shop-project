@@ -37,7 +37,7 @@ export const listProducts=()=>{
                 dispatch(productSlice.actions.productListSuccess(response.data))
             }catch(error){
                 console.log(error)
-                dispatch(productSlice.actions.productListFail(error.response && error.response.data.message ? error.response.data.message:error.message))
+                dispatch(productSlice.actions.productListFail(error.response && error.response.data.detail ? error.response.data.detail:error.message))
             }
         }
         fetchProducts()

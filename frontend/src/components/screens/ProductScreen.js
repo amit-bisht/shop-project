@@ -31,6 +31,7 @@ const ProductScreen = () => {
     dispatch(cartAction.addItem({_id:product._id,name:product.name,image:product.image,price:product.price}))
   }
   
+  
   return (
     <div>
       <Link to="/" className="btn btn-light my-3">

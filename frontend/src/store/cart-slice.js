@@ -19,6 +19,13 @@ const cartSlice=createSlice({
                 existingItem.quantity++;
                 state.totalQuantity++;
             }
+        },
+        removeItem(state,action){
+            const existingItem=state.cartItems.filter((item)=>item._id!=action.payload)
+            if(existingItem){
+                state.cartItems=existingItem
+                state.totalQuantity--
+            }
         }
     }
 })

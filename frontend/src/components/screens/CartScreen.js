@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Row,
   ListGroup,
@@ -10,59 +10,63 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Message from "../Message";
+import { useSelector,useDispatch } from "react-redux";
+import { cartAction } from "../../store/cart-slice";
 const CartScreen = () => {
-  const products = [
-    {
-      _id: "1",
-      name: "Airpods Wireless Bluetooth Headphones",
-      image: "/images/airpods.jpg",
-      price: 89.99,
-      countInStock: 10,
-    },
-    {
-      _id: "2",
-      name: "iPhone 11 Pro 256GB Memory",
-      image: "/images/phone.jpg",
-      price: 599.99,
-      countInStock: 0,
-    },
-    {
-      _id: "3",
-      name: "Cannon EOS 80D DSLR Camera",
-      image: "/images/camera.jpg",
-      price: 929.99,
-      countInStock: 5,
-    },
-  ];
+  let cartItems = null;
+  const dispatch=useDispatch()
+
+  cartItems=useSelector(state=>state.cart.cartItems)
+
+  const deleteCartHandler=(id)=>{
+    dispatch(cartAction.removeItem(id))
+  }
   return (
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        <ListGroup variant="flush">
-          {products.map((product) => (
+        {cartItems.length>0 &&
+          <ListGroup variant="flush">
+          {cartItems.map((product) => (
             <ListGroup.Item key={product._id}>
               <Row>
                 <Col md={2}>
                   <Image src={product.image} fluid rounded />
                 </Col>
                 <Col md={3}>
-                  <Link>{product.name}</Link>
+                  <Link to="/">{product.name}</Link>
                 </Col>
                 <Col md={2}>{`$${product.price}`}</Col>
                 <Col md={3}>
-                  <Form.Select aria-label="Default select example" value="1">
+                  <Form.Select readOnly aria-label="Default select example" value={product.quantity}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                   </Form.Select>
                 </Col>
                 <Col md={1}>
-                    <Button type="button" variant="light"><i className="fa-solid fa-trash"></i></Button>
+                    <Button type="button" onClick={()=>{deleteCartHandler(product._id)}}variant="light"><i className="fa-solid fa-trash"></i></Button>
                 </Col>
               </Row>
             </ListGroup.Item>
           ))}
         </ListGroup>
+        }    
+      </Col>
+      <Col md={4}>
+        <Card>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <h2>Subtotal(3)</h2>
+              $12.00
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <div className="d-grid gap-2">
+                <Button type="button">Proceed to checkout</Button>
+              </div>
+            </ListGroup.Item>
+          </ListGroup>
+        </Card>
       </Col>
     </Row>
   );

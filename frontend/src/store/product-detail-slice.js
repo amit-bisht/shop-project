@@ -32,7 +32,7 @@ export const fetchProduct = (id) => {
       try {
         dispatch(productDetailAction.productDetialRequest());
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/product/${id}`
+          `http://127.0.0.1:8000/api/products/${id}`
         );
         console.log(response.data);
         dispatch(productDetailAction.productDetailSuccess(response.data));
@@ -40,8 +40,8 @@ export const fetchProduct = (id) => {
         console.log(error);
         dispatch(
           productDetailAction.productDetailFail(
-            error.response && error.response.data.message
-              ? error.response.data.message
+            error.response && error.response.data.detail
+              ? error.response.data.detail
               : error.message
           )
         );
