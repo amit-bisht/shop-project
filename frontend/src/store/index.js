@@ -3,6 +3,7 @@ import productSlice from './product-slice';
 import productDetailSlice from './product-detail-slice';
 import cartSlice from './cart-slice';
 import userSlice from './user-slice';
+import registerSlice from './register-slice';
 
 const store=configureStore({
     reducer:{
@@ -10,15 +11,8 @@ const store=configureStore({
         'productDetail':productDetailSlice.reducer,
         'cart':cartSlice.reducer,
         'user':userSlice.reducer,
+        'register':registerSlice.reducer
     }
 })
 
-const userInfoStorage=localStorage.getItem('userInfo')?
-JSON.parse(localStorage.getItem("userInfo")):null
-
-const initialState={
-    userLogin:{
-        userInfo:userInfoStorage
-    }
-}
 export default store;

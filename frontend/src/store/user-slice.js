@@ -2,7 +2,8 @@ import {createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 const initialState={
     loading:null,
-    userInfo:null,
+    userInfo:localStorage.getItem('userInfo')?
+    JSON.parse(localStorage.getItem("userInfo")):null,
     error:null,
 }
 const userSlice=createSlice({
@@ -32,19 +33,19 @@ const userSlice=createSlice({
     }
 })
 
-export const login=(email,password)=>{
+export const login=(email,userpassword)=>{
     return async(dispatch)=>{
         async function userLogin(){
             try{
                 dispatch(userActions.userLoginRequest)
                 const config={
                     headers:{
-                        'Content-type':'application-json'
+                        'Content-Type':'application/json'
                     }
                 }
-                const response=await axios.get("http://127.0.0.1:8000/api/users/token/",{
+                const response=await axios.post("http://127.0.0.1:8000/api/users/token/",{
                     username:email,
-                    password:password
+                    password:userpassword
                 },config)
                 console.log(response)
                 dispatch(userActions.userLoginSuccess(response.data))
@@ -55,6 +56,12 @@ export const login=(email,password)=>{
             }
         }
         userLogin();
+    }
+}
+export const logout=()=>{
+    return async(dispatch)=>{
+       localStorage.removeItem("userInfo")
+       dispatch(userActions.userLogout())
     }
 }
 export default userSlice

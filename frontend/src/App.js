@@ -6,6 +6,8 @@ import { Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import ProductScreen from "./components/screens/ProductScreen";
 import CartScreen from "./components/screens/CartScreen";
+import LoginScreen from "./components/screens/LoginScreen";
+import RegisterScreen from "./components/screens/RegisterScreen";
 function App() {
   return (
     <React.Fragment>
@@ -14,6 +16,12 @@ function App() {
         <Container>
           <Route path="/" exact> 
             <HomeScreen />
+          </Route>
+          <Route path="/login">
+            <LoginScreen/>
+          </Route>
+          <Route path="/register">
+            <RegisterScreen/>
           </Route>
           <Route path="/product/:id">
             <ProductScreen/>
