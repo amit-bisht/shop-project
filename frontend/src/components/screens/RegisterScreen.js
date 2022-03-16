@@ -10,7 +10,8 @@ const initalState={
     username:"",
     email:"",
     password:"",
-    confirm_pasword:""
+    confirm_pasword:"",
+    errorMessage:""
 }
 const reducerFn=(state,action)=>{
     if(action.type=="username"){
@@ -18,7 +19,8 @@ const reducerFn=(state,action)=>{
             username:action.val,
             email:state.email,
             password:state.password,
-            confirm_pasword:state.confirm_pasword
+            confirm_pasword:state.confirm_pasword,
+            errorMessage:state.errorMessage
         }
     }
     if(action.type=="email"){
@@ -26,7 +28,8 @@ const reducerFn=(state,action)=>{
             username:state.username,
             email:action.val,
             password:state.password,
-            confirm_pasword:state.confirm_pasword
+            confirm_pasword:state.confirm_pasword,
+            errorMessage:state.errorMessage
         }
     }
     if(action.type=="email"){
@@ -34,7 +37,8 @@ const reducerFn=(state,action)=>{
             username:state.username,
             email:action.val,
             password:state.password,
-            confirm_pasword:state.confirm_pasword
+            confirm_pasword:state.confirm_pasword,
+            errorMessage:state.errorMessage
         }
     }
     if(action.type=="password"){
@@ -42,7 +46,8 @@ const reducerFn=(state,action)=>{
             username:state.username,
             email:state.email,
             password:action.val,
-            confirm_pasword:state.confirm_pasword
+            confirm_pasword:state.confirm_pasword,
+            errorMessage:state.errorMessage
         }
     }
     if(action.type=="confirm-password"){
@@ -50,7 +55,17 @@ const reducerFn=(state,action)=>{
             username:state.username,
             email:state.email,
             password:state.password,
-            confirm_pasword:action.val
+            confirm_pasword:action.val,
+            errorMessage:state.errorMessage
+        }
+    }
+    if(action.type=="error-message"){
+        return{
+            username:state.username,
+            email:state.email,
+            password:state.password,
+            confirm_pasword:action.val,
+            errorMessage:action.val
         }
     }
 
@@ -64,11 +79,15 @@ const RegisterScreen=()=>{
     const submitHandler=(event)=>{
         event.preventDefault()
         console.log(userInfoState)
-        dispatch(register(userInfoState.username,userInfoState.email,userInfoState.password))
+        if(userInfoState.password!=userInfoState.confirm_pasword){
+            dispatchUserInfo({type:'error-message',val:"Password Do not match"})
+        }
+        // dispatch(register(userInfoState.username,userInfoState.email,userInfoState.password))
     }
     return(
         <FormContainer>
         <h1>Sign In</h1>
+        {errorMessage && <Message variant="danger">{errorMessage}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader/> }
         <Form onSubmit={submitHandler} method="post" action='/'>
