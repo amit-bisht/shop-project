@@ -75,19 +75,27 @@ const RegisterScreen=()=>{
     const [userInfoState,dispatchUserInfo]=useReducer(reducerFn,initalState)
     const {loading,userInfo,error}=useSelector(state=>state.register)
     const dispatch=useDispatch()
+    const history=useHistory()
     
     const submitHandler=(event)=>{
         event.preventDefault()
         console.log(userInfoState)
         if(userInfoState.password!=userInfoState.confirm_pasword){
             dispatchUserInfo({type:'error-message',val:"Password Do not match"})
+            return
         }
-        // dispatch(register(userInfoState.username,userInfoState.email,userInfoState.password))
+        dispatch(register(userInfoState.username,userInfoState.email,userInfoState.password))
+        
     }
+    useEffect(()=>{
+        if(userInfo!=null){
+           history.push("/login")
+        }
+    },[userInfo,history])
     return(
         <FormContainer>
         <h1>Sign In</h1>
-        {errorMessage && <Message variant="danger">{errorMessage}</Message>}
+        {userInfoState.errorMessage && <Message variant="danger">{userInfoState.errorMessage}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader/> }
         <Form onSubmit={submitHandler} method="post" action='/'>

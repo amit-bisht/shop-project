@@ -8,6 +8,7 @@ import ProductScreen from "./components/screens/ProductScreen";
 import CartScreen from "./components/screens/CartScreen";
 import LoginScreen from "./components/screens/LoginScreen";
 import RegisterScreen from "./components/screens/RegisterScreen";
+import ProfileScreen from "./components/screens/ProfileScreen";
 function App() {
   return (
     <React.Fragment>
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path="/cart">
             <CartScreen/>
+          </Route>
+          <Route path="/user/profile">
+            <ProfileScreen/>
           </Route>
         </Container>
       </main>

@@ -11,12 +11,12 @@ const registerSlice=createSlice({
     reducers:{
         userRegisterRequest(state,action){
             state.loading=true
-            state.userInfo=action.payload
             state.error=null
         },
         userRegisterSuccess(state,action){
-            state.loading=false
+            state.loading=null
             state.error=null
+            state.userInfo=action.payload
         },
         userRegisterFail(state,action){
             state.loading=false

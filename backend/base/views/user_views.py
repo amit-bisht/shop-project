@@ -27,12 +27,24 @@ def registerUser(request):
         message = {'detail': 'user with this name already exists'}
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user=request.user
+    data=request.data
+    user.username=data["username"]
+    user.email=data["email"]
+    if(data["password"]!=''):
+        user.password=make_password(data["password"])
+    user.save()
+    serializer=UserSerializer(user,many=False)
+    return Response(serializer.data)
 
    
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def getUserProfile(request):
+def getUserProfile(request,id):
     user=request.user
     serializer=UserSerializer(user,many=False)
     return Response(serializer.data)
@@ -46,6 +58,7 @@ def getUsers(reqeust):
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
+        data["id"]=str(self.user.id)
         data["username"]=str(self.user.username)
         data['email']=str(self.user.email)
         return data
